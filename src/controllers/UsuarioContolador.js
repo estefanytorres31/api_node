@@ -8,7 +8,7 @@ const paises = require("i18n-iso-countries");
 paises.registerLocale(require("i18n-iso-countries/langs/es.json"))
 
 export const listaPaises=async(req,res)=>{
-    const listaPaises=paises.getNames('es')
+    const listaPaises=Object.values(paises.getNames('es', {select: "official"}))
     res.json(listaPaises)
 }
 
