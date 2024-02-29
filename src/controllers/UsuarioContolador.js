@@ -1,21 +1,40 @@
 import {connect} from "../database";
 import bcrypt from "bcrypt"
-import jwt from"jsonwebtoken"
+import jwt from "jsonwebtoken"
 import nodemailer from "nodemailer"
+
+const paises = require("i18n-iso-countries");
+
+paises.registerLocale(require("i18n-iso-countries/langs/es.json"))
+
+export const listaPaises=async(req,res)=>{
+    const listaPaises=paises.getNames('es')
+    res.json(listaPaises)
+}
+
+function validarNombrePais(pais) {
+    const lista = paises.getNames('es');
+    return Object.values(lista).includes(pais);
+  }
+
 export const crearUsuario=async (req, res)=>{
     try {
         const connection = await connect();
-        const hashedPassword = await bcrypt.hash(req.body.password, 10); 
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const pais=req.body.pais
+        if(!validarNombrePais(pais)){
+            return res.status(400).json({ error: "Pais inválido" });
+        }
         const [results] = await connection.execute(
           "INSERT INTO usuarios(nombre, email, password, pais) VALUES (?, ?,?,?)",
-          [req.body.nombre, req.body.email, hashedPassword, req.body.pais]
+          [req.body.nombre, req.body.email, hashedPassword, pais]
         );
     
         const newUsuario = {
             id: results.insertId, 
             nombre: req.body.nombre,
             email: req.body.email,
-            pais: req.body.pais,
+            pais: pais,
             password: hashedPassword 
       };
         res.json(newUsuario);
