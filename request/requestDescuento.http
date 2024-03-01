@@ -5,19 +5,19 @@ Content-Type: application/json
 
 {
   "nombre": "Oferta de invierno",
-  "tipo_descuento": "porcentaje",
+  "tipo_descuento": "%",
   "valor":50,
   "estado":true 
 }
 ###
 GET {{api}}/1
 ###
-PUT {{api}}/2
+PUT {{api}}/1
 Content-Type: application/json
 
 {
   "nombre": "Oferta de invierno",
-  "tipo_descuento": "porcentaje",
+  "tipo_descuento": "%",
   "valor":20,
   "estado":true 
 }

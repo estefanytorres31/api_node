@@ -1,7 +1,7 @@
 import {connect} from "../database";
 export const crearDescuento = async (req, res) => {
     try {
-        const tiposValidos = ['porcentaje', 'monto'];
+        const tiposValidos = ['%', '$'];
         if (!tiposValidos.includes(req.body.tipo_descuento)) {
             return res.status(400).json({ message: 'Tipo de descuento no válido' });
         }
@@ -9,14 +9,14 @@ export const crearDescuento = async (req, res) => {
         // Validar y transformar el valor del descuento si es porcentaje
         let valor = req.body.valor;
         let valor_calculado
-        if (req.body.tipo_descuento === 'porcentaje') {
+        if (req.body.tipo_descuento === '%') {
             // Valida si el valor es numérico
             if (isNaN(valor)) {
                 return res.status(400).json({ message: 'El valor debe ser numérico' });
             }
             // Convierte el valor a un porcentaje decimal
             valor_calculado = parseFloat(valor) / 100;
-        } else if (req.body.tipo_descuento === 'monto') {
+        } else if (req.body.tipo_descuento === '$') {
             // Si el tipo de descuento es monto, usa el valor proporcionado directamente
             if (isNaN(valor)) {
                 return res.status(400).json({ message: 'El valor debe ser numérico' });
@@ -72,14 +72,14 @@ export const modificarDescuento = async (req, res) => {
         let nuevoValor = req.body.valor;
         let nuevoValorCalculado = nuevoValor; // El valor calculado predeterminado es el mismo que el nuevo valor
 
-        if (req.body.tipo_descuento === 'porcentaje') {
+        if (req.body.tipo_descuento === '%') {
             // Valida si el nuevo valor es numérico
             if (isNaN(nuevoValor)) {
                 return res.status(400).json({ message: 'El nuevo valor debe ser numérico' });
             }
             // Convierte el nuevo valor a un porcentaje decimal
             nuevoValorCalculado = parseFloat(nuevoValor) / 100;
-        } else if (req.body.tipo_descuento === 'monto') {
+        } else if (req.body.tipo_descuento === '$') {
             // Si el tipo de descuento es monto, usa el nuevo valor proporcionado directamente
             if (isNaN(nuevoValor)) {
                 return res.status(400).json({ message: 'El nuevo valor debe ser numérico' });
