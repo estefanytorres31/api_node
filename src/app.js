@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import routerUsuario from "./routers/UsuarioRoutes";
+import routerUsuario from "./routers/UsuarioRouter";
 import routerDescuento from "./routers/DescuentoRouter"
 import morgan from "morgan";
 

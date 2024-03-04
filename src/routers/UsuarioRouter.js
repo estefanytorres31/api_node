@@ -1,4 +1,4 @@
-import { crearUsuario,login,enviarPIN,verificarPIN,cambiarPassword,listaPaises,logout } from '../controllers/UsuarioContolador';
+import { crearUsuario,login,enviarPIN,verificarPIN,cambiarPassword,listaPaises,logout } from '../controllers/UsuarioControlador';
 import { Router } from 'express';
 
 const routerUsuario = Router();
