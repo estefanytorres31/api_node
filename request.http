@@ -6,9 +6,9 @@ Content-Type: application/json
 
 {
   "nombre": "Pepe Lopez",
-  "email": "pep07@gmail.com",
-  "password": "holamundo",
-  "pais": "Peru"
+  "email": "lola@gmail.com",
+  "password": "1223445678",
+  "pais": "Perú"
 }
 ###
 POST {{api}}/login

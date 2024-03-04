@@ -1,30 +1,38 @@
 import {connect} from "../database";
+//Creacion de un nuevo descuento
 export const crearDescuento = async (req, res) => {
     try {
+        
+        //Opciones de tipos de descuento que se deben ingresar
         const tiposValidos = ['%', '$'];
+        //En el caso se ingrese otro tipo
         if (!tiposValidos.includes(req.body.tipo_descuento)) {
             return res.status(400).json({ message: 'Tipo de descuento no válido' });
         }
-        
-        // Validar y transformar el valor del descuento si es porcentaje
+
+        //Variables
         let valor = req.body.valor;
         let valor_calculado
+
+        // En el caso que se ingrese porcentaje(%)
         if (req.body.tipo_descuento === '%') {
-            // Valida si el valor es numérico
+            //Verifica si se ingreso un valor numerico
             if (isNaN(valor)) {
                 return res.status(400).json({ message: 'El valor debe ser numérico' });
             }
             // Convierte el valor a un porcentaje decimal
             valor_calculado = parseFloat(valor) / 100;
-        } else if (req.body.tipo_descuento === '$') {
-            // Si el tipo de descuento es monto, usa el valor proporcionado directamente
+        }
+        
+        // En el caso que se ingrese un monto($)
+        else if (req.body.tipo_descuento === '$') {
+            //Verifica si se ingreso un valor numerico
             if (isNaN(valor)) {
                 return res.status(400).json({ message: 'El valor debe ser numérico' });
             }
+            //Se mantiene el valor tal y como se ingreso
             valor_calculado = parseFloat(valor);
-        } else {
-            return res.status(400).json({ message: 'Tipo de descuento no válido' });
-        }
+        } 
 
         // Insertar el descuento en la base de datos
         const connection = await connect();
@@ -48,6 +56,8 @@ export const crearDescuento = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+//Eliminar descuento
 export const eliminarDescuento=async (req, res)=>{
     const connection =  await connect();
   const result = await connection.execute("DELETE FROM descuento WHERE id = ?", [
@@ -57,6 +67,8 @@ export const eliminarDescuento=async (req, res)=>{
 
   res.sendStatus(204);
 };
+
+//Obtener descuento por id
 export const obtenerDescuentoById=async (req, res)=>{
     const connection = await connect();
     const rows = await connection.execute("SELECT * FROM descuento WHERE id = ?", [
@@ -64,26 +76,40 @@ export const obtenerDescuentoById=async (req, res)=>{
   ]);
   res.json(rows[0][0]);
 };
+
+//Modificar un descuento
 export const modificarDescuento = async (req, res) => {
     try {
         const connection = await connect();
 
-        // Validar y transformar el nuevo valor del descuento si es porcentaje
-        let nuevoValor = req.body.valor;
-        let nuevoValorCalculado = nuevoValor; // El valor calculado predeterminado es el mismo que el nuevo valor
+        //Opciones de tipos de descuento que se deben ingresar
+        const tiposValidos = ['%', '$'];
+        //En el caso se ingrese otro tipo
+        if (!tiposValidos.includes(req.body.tipo_descuento)) {
+            return res.status(400).json({ message: 'Tipo de descuento no válido' });
+        }
 
+        //Variabes
+        let nuevoValor = req.body.valor;
+        let nuevoValorCalculado = nuevoValor; 
+
+        //En el caso se ingrese porcentaje(%)
         if (req.body.tipo_descuento === '%') {
-            // Valida si el nuevo valor es numérico
+
+            // Verifica si se ingreso un valor numerico
             if (isNaN(nuevoValor)) {
                 return res.status(400).json({ message: 'El nuevo valor debe ser numérico' });
             }
             // Convierte el nuevo valor a un porcentaje decimal
             nuevoValorCalculado = parseFloat(nuevoValor) / 100;
-        } else if (req.body.tipo_descuento === '$') {
-            // Si el tipo de descuento es monto, usa el nuevo valor proporcionado directamente
+        }
+        // En el caso que se ingrese un monto($)
+        else if (req.body.tipo_descuento === '$') {
+            // Verifica si se ingreso un valor numerico
             if (isNaN(nuevoValor)) {
                 return res.status(400).json({ message: 'El nuevo valor debe ser numérico' });
             }
+            //Se mantiene el valor tal y como se ingreso
             nuevoValorCalculado = parseFloat(nuevoValor);
         }
 
@@ -102,6 +128,8 @@ export const modificarDescuento = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+//Obtener todos los descuentos
 export const obtenerDescuentos = async (req, res) => {
     const connection = await connect();
     const [rows] = await connection.execute("SELECT * FROM descuento");

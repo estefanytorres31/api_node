@@ -5,8 +5,8 @@ Content-Type: application/json
 
 {
   "nombre": "Oferta de invierno",
-  "tipo_descuento": "$",
-  "valor":100,
+  "tipo_descuento": "%",
+  "valor":45,
   "estado":true 
 }
 ###
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
   "nombre": "Oferta de invierno",
-  "tipo_descuento": "%",
+  "tipo_descuento": "$",
   "valor":10,
   "estado":true 
 }
