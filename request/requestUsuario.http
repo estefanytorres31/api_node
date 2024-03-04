@@ -6,8 +6,8 @@ Content-Type: application/json
 
 {
   "nombre": "Estefany",
-  "email": "holiwis@gmail.com",
-  "password": "12345678",
+  "email": "jo@gmail.com",
+  "password": "12346785",
   "pais": "Perú"
 }
 ###
@@ -16,6 +16,6 @@ Content-Type: application/json
 
 {
 
-  "email": "estefa@gmail.com",
-  "password": "456321"
+  "email": "estefanyt3101@gmail.com",
+  "password": "holamellamoestefany"
 }

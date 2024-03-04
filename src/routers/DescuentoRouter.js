@@ -2,6 +2,7 @@ import { crearDescuento,eliminarDescuento,modificarDescuento,obtenerDescuentoByI
 import { Router } from 'express';
 
 const routerDescuento = Router();
+//DESCUENTO CRUD
 routerDescuento.post('/descuento',crearDescuento);
 routerDescuento.get('/descuento',obtenerDescuentos);
 routerDescuento.get('/descuento/:id',obtenerDescuentoById);
