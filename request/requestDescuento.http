@@ -11,14 +11,13 @@ Content-Type: application/json
 ###
 GET {{api}}/1
 ###
-PUT {{api}}/2
+PUT {{api}}/5
 Content-Type: application/json
 
 {
   "nombre": "Oferta de invierno",
   "tipo_descuento": "$",
-  "valor":40,
-  "estado":true 
+  "valor":100
 }
 ###
 GEt {{api}}

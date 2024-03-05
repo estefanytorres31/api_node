@@ -82,21 +82,20 @@ export const modificarDescuento = async (req, res) => {
     try {
         const connection = await connect();
 
-        //Opciones de tipos de descuento que se deben ingresar
+        // Opciones de tipos de descuento que se deben ingresar
         const tiposValidos = ['%', '$'];
-        //En el caso se ingrese otro tipo
+        // En el caso se ingrese otro tipo
         if (!tiposValidos.includes(req.body.tipo_descuento)) {
             return res.status(400).json({ message: 'Tipo de descuento no válido' });
         }
 
-        //Variabes
+        // Variables
         let nuevoValor = req.body.valor;
         let nuevoValorCalculado = nuevoValor; 
 
-        //En el caso se ingrese porcentaje(%)
+        // En el caso se ingrese porcentaje(%)
         if (req.body.tipo_descuento === '%') {
-
-            // Verifica si se ingreso un valor numerico
+            // Verifica si se ingresó un valor numérico
             if (isNaN(nuevoValor)) {
                 return res.status(400).json({ message: 'El nuevo valor debe ser numérico' });
             }
@@ -105,12 +104,25 @@ export const modificarDescuento = async (req, res) => {
         }
         // En el caso que se ingrese un monto($)
         else if (req.body.tipo_descuento === '$') {
-            // Verifica si se ingreso un valor numerico
+            // Verifica si se ingresó un valor numérico
             if (isNaN(nuevoValor)) {
                 return res.status(400).json({ message: 'El nuevo valor debe ser numérico' });
             }
-            //Se mantiene el valor tal y como se ingreso
+            // Se mantiene el valor tal y como se ingresó
             nuevoValorCalculado = parseFloat(nuevoValor);
+        }
+
+        // Verificar si se proporciona el estado
+        let estado;
+        if (req.body.estado !== undefined) {
+            estado = req.body.estado;
+        } else {
+            // Si no se proporciona, mantener el estado existente
+            const [existingResult] = await connection.query("SELECT estado FROM descuento WHERE id = ?", [req.params.id]);
+            if (existingResult.length === 0) {
+                return res.status(404).json({ message: 'Descuento no encontrado' });
+            }
+            estado = existingResult[0].estado;
         }
 
         // Actualizar el descuento en la base de datos
@@ -119,7 +131,7 @@ export const modificarDescuento = async (req, res) => {
             req.body.tipo_descuento,
             nuevoValor,
             nuevoValorCalculado,
-            req.body.estado,
+            estado,
             req.params.id
         ]);
 
