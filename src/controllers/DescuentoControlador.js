@@ -38,7 +38,7 @@ export const crearDescuento = async (req, res) => {
         const connection = await connect();
         const [results] = await connection.execute(
             "INSERT INTO descuento(nombre, tipo_descuento, valor,valor_calculado, estado) VALUES(?,?,?,?,?)",
-            [req.body.nombre, req.body.tipo_descuento, valor,valor_calculado, req.body.estado]
+            [req.body.nombre, req.body.tipo_descuento, valor,valor_calculado, true]
         );
 
         // Devolver el descuento creado con su estado
@@ -48,7 +48,7 @@ export const crearDescuento = async (req, res) => {
             tipo_descuento: req.body.tipo_descuento,
             valor: valor,
             valor_calculado: valor_calculado,
-            estado: req.body.estado
+            estado: true
         };
 
         res.status(201).json(newDescuento);
@@ -135,3 +135,24 @@ export const obtenerDescuentos = async (req, res) => {
     const [rows] = await connection.execute("SELECT * FROM descuento");
     res.json(rows);
   };
+  
+  export const cambiarEstadoDescuento = async (req, res) => {
+    try {
+        const connection = await connect();
+
+        const nuevoEstado = req.body.estado;
+
+        const [result] = await connection.query("UPDATE descuento SET estado = ? WHERE id = ?", [
+            nuevoEstado,
+            req.params.id
+        ]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Descuento no encontrado' });
+        }
+
+        res.sendStatus(204);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
